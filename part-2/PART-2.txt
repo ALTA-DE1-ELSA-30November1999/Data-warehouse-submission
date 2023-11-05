@@ -1,0 +1,22 @@
+PART 2 – Columnar database
+1. Jalankan citus di computer dengan menggunakan docker compose
+(Gambar Nomor1(1-3) )
+
+2. Tuliskan perintah untuk membuat
+	a. Tabel biasa
+	CREATE TABLE not_columnar(devide_id bigint, event_id bigserial, event_time timestamptz default now(), data jsonb not null);
+	(Gambar Nomor2-A)
+	b. Tabel kolumnar
+	CREATE TABLE is_columnar(devide_id bigint, event_id bigserial, event_time timestamptz default now(), data jsonb not null) USING columnar;
+	(Gambar Nomor2-B)
+
+3.Masukan 100 baris data ke dalam tabel biasa dan tabel columnar
+INSERT INTO not_columnar (devide_id, data) SELECT d, '{"Hello":"Elsa"}' FROM generate_series(1,100) d;
+INSERT INTO is_columnar (devide_id, data) SELECT d, '{"Hello":"Elsa"}' FROM generate_series(1,100) d;
+(Gambar Nomor3)
+ 
+4.	Tampilkan perbedaan ukuran antara tabel biasa dan tabel columnar
+(Gambat Nomor4(1-2) )
+ 
+5.	Tuliskan kesimpulannya
+Kesimpulan dari perbedaan ukuran antara tabel biasa dan tabel columnar bahwa ukuran penyimpanan tabel biasa jauh lebih besar daripada tabel columnar. Pada awalnya, ukuran kedua tabel columnar dan tabel biasa mempunyai ukuran yang sama. Tapi, setelah dilakukan penambahan row, ukuran penyimpanan tabel columnar mengalami pengompresan sehingga penyimpanan jauh lebih kecil daripada tabel biasa. 

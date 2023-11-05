@@ -1,0 +1,50 @@
+PART 1 – Introduction to Data Warehuse
+1.	Sebutkan perbedaan antara data warehouse dan data lake
+	Ada beberapa perbedaan antara data lake dan data warehouse. Struktur data, metode pemrosesan, accessbility dan tujuan kegunaan keseluruhan data adalah pembeda utama.
+	• Data Lake
+		a. Struktur Data : Data Mentah
+		b. Tujuan : Belum ditentukan (undetermined)
+		c. Proses : Data mengikuti ekstrak, muat dan ubah, atau ELT, jadi data disusun setelah ekstraksi dari penyimpanan.
+		d. Accessbility : Sangat mudah diakses dan cepat diperbarui (flexible)
+	• Data Warehouse
+		a. Struktur Data : Data yang telah diproses
+		b. Tujuan : Sudah ditentukan/Sudah digunakan(in-use) 
+		c. Proses : Data mengikuti ekstrak, transformasi, dan Muat, atau ETL, sehingga data disusun sebelum ekstraksi.
+		d. Accessbility : Lebih rumit dan cukup mahal untuk melakukan perubahan (secure)
+
+2.	Apa yang membedakan teknologi database untuk data warehouse (OLAP) dari teknologi database konvensional (OLTP).
+Data warehouse dan database merupakan sistem penyimpanan data, yang membedakannya adalah cara kedua sistem tersebut memproses data. Data warehouse mengunakan Online Analytical Processing (OLAP) untuk menganalisis data yang banyak dengan cepat dengan bentuk denormalisasi yang mempunyai historical.
+Sedangkan database menggunakan Online Transactional Processing (OLTP) untuk menghapus, memasukkan, mengganti, dan memperbarui data dalam transaksi  yang banyak dalam waktu yang relatif singkat. 
+
+3.	Teknologi apa saja yang biasanya dipakai untuk data warehouse?
+	Tools akses adalah alat-alat yang memungkinkan berinteraksi dengan data. Beberapa alat di dalamnya yaitu:
+	• Query and reporting tools:  membuat laporan analisis berupa spreadsheet atau bentuk visual lainnya. Contohnya, Query Tool, IBM InfoSphere Optim Query Workload Tuner, dll
+	• Application development tools: menyusun laporan sesuai tujuannya masing-masing. Contohnya IBM Data Studio.
+	• Data mining tools for data warehousing: membantu pengumpulan data agarlebih sistematis. Semisal SAS Enterprise Miner, SPSS, dll.
+	• OLAP tools: memungkinkan analisis data warehouse dari berbagai sudut pandang. Contoh, IBM Cognos, Mondrian, Xplenty, dll.
+
+4.	Tuliskan setiap perintah dari proses instalasai ctus menggunakan docker compose sampai table terbentuk, berikan juga tangkapan layer untuk setiap Langkah dan hasilnya !
+	a. Pertama, buat direktori untuk menyimpan instalasi citus dengan nama try-citus dengan perintah mkdir (nama diektori). Setelah selesai cek apakah sudah direktori baru sudah ada dengan perintah ls
+	b. Kemudian masuk kedalam direktori dengan perintah cd try-citus
+	c. Setelah masuk kedalam direktori, buka direktori juga melalui editor source code vscode  lalu buat file dengan format .yml untuk instalasi citus
+	d. Masukkan source code yang digunakan untuk instalasi. Disini perlu dilakukan pergantian untuk beberapa list source code berikut.
+		• Container-name : digunakan untuk memberi nama citus
+		• Ports : digunakan untuk koneksi dengan docker container
+		• POSTGRES_USER : sebagai superuser yang mengatur access kepada user
+		• POSTGRES_PASSWORD : pass untuk superuser
+		• PGUSER : sebagai user
+		• PGPASSWORD : pass untuk user
+		• POSTGRES_HOST_AUTH_METHOD : diganti Trust sebagai default
+	e. Jalankan perintah docker compose -p citus up -d untuk menjalankan docker compose. Perintah -p digunakan untuk memberi nama direktori dan -d digunakan untuk menjalankan docker compose di background
+	f. Berikut hasil dari docker compose yang sudah dijalankan. Citus_master berperan sebagai pengatur, sedangakan citus_manager berperan sebagai pengelola, dan worker berperan untuk menjalankan perintah.
+	g. Untuk menjalankan citus dari docker compose maka jalankan perintah docker exec -it citus_master bash sehingga nanti berada pada mode root
+	h. Untuk koneksi ke postgresql jalankan peritah psql -U mysuperuser -d postgres. Perintah -U untuk user dan perintah -d untuk database.
+	i. Buat extensi citus dengan peirntah create extension citus untuk bisa membuat table.
+	j. Create table columar dengan perintah seperti yang dibawah.
+	k. Isi table dengan perintah insert seperti ke bawah. Dan perintah select untuk menampilkan isi table yang telah di insert. Disini digunakan perintah limit 10 untuk menampilakn hasil 10 baris saja.
+	l. Buat table dengan mencopy dari table events_columnar sebelumnya. Dan perintah select untuk menampilkan isi table yang telah di insert.
+	m. Jalankan perintah \dt+ untuk menampilkan daftar semua tabel dengan deskripsi. Disini dapat diliat bahwa semua sama kecuali pada access method yaitu pada tabel event_row digunakan acces method heap dan untuk tabel events_columnar digunakan access method columnar
+ 
+5.	Jelaskan perbedaan antara access method heap dan dan columnar pada citus!
+Postgres biasanya menyimpan data menggunakan access method heap, yaitu penyimpanan berbasis baris. Penyimpanan bentuk baris mudah di read dan write. Tabel berbasis baris biasanya digunakan untuk beban kerja transaksional.
+Sedangkan access method columnar adalah cara baru untuk menyimpan data dalam tabel Postgres. Kolom mengelompokkan data berdasarkan kolom, bukan berdasarkan baris, dan mengompresi datanya juga. Menyusun data berdasarkan kolom cenderung terkompresi dengan baik, dan ini juga berarti bahwa queri dapat melewati kolom yang tidak diperlukan. Penyimpanan dalam bentuk kolom dalam lambat untuk di read dan write dibandingkan dengan penyimpanan berbasis baris.

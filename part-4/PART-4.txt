@@ -1,0 +1,10 @@
+PART 4 – Replication + Sharding
+1.	Buatlah sebuah bucket di  GCS, upload beberapa file ke bucket tersebut
+
+2.	Hapus file yang sudah di upload 
+
+3.	Lakukan eksplorasi sample data Wikipedia dengan menggunakan big query
+ 
+4.	Munculkan jumlah kontribusi dari masing-masing contributor_ip, urutkan dari kontribusi terbesar ke kontribusi terkecil
+ 
+ 

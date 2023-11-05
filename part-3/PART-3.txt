@@ -1,0 +1,33 @@
+PART 3 – Replication + Sharding 
+1. Jelaskan perbedaan antara replication dan sharding
+Replication adalah data yang sama disalin di antara beberapa node. Tujuannya sebagai cadangan /karena ketersediaan tinggi.
+Sharding adalah data yang dibagi menjadi beberapa bagian dan didistribusikan ke beberapa node. Tujuannya untuk digunakan untuk pemrosesan/penyimpanan terdistribusi. Dengan menggunakan sharding dapat menyimpan data lebih besar dari kapasitas node.
+
+2. Lakukan ppercobaan untuk membuat reference table + distributed table seperti pada repo /Immersive-DataEngineer-Resource/citus-demo
+	a) Jalankan perintah ./reset.sh yang dgunakan untuk mereset seluruh isi dari database
+	b) Atur port yang akan digunakan untuk docker compose. Untuk port harus berbeda setiap worker.
+	c) Jalankan perintah docker compose up -d
+	d) Definisikan variabel yang digunakan
+	e) Lakukan replication dengan perintah SELECT create_reference_table
+	f) Jalankan perintah CREATE SEQUENCE yang digunakan untuk menghindari duplikasi pada id tabel. Kemudian lakukan sharding dengan perintah SELECT create_distributed_table
+	g) Masukkan data pada tabel dengan menjalankan perintah Insert
+	h) Jalankan perintah ./populate.sh untuk create table
+	i) Definisikan nama databse dan user
+	j) Jalankan docker exec untuk menjalankan container. dan peirntah count digunakan untuk menghitung jumlah row yang ada pada tabel
+	k) Menampilkan pg_dist_node
+	l) Menampilkan order shard id placement dan oder shard table names dengan menjalankan CTE di dalam file inspect_get_order_shard_placement.sql
+	m) Perintah CTE placement digunakan untuk menampilkan shard id dan nodename dari tabel pg_dist_node
+	n) Perintah CTE order_ids terdapat perintah limit yang digunakan hanya untuk menampilkan 5 order_id dari tabel orders yang telah di urutkan dengan perintah order by
+	o) Perintah CTE order_shards digunakan untuk menampilkan shard_id dan real_table_name dari CTE order_ids
+	p) Perintah select  untuk menampilkan order_shards, placement.node_name yang berasal dari CTE placement dan order_shards yang sudah di join
+	q) Jalankan perintah ./inspect.sh untuk menjalankan query
+ 
+3. Di node/worker mana saja product “Headphone” tersimpan? Tunjukkan shard id nya
+ 
+4. Di node/worker mana saja order dengan id =13 tersimpan? Tunjukkan shard id nya
+ 
+5. Kapan sebaiknya kita menggunakan replication?
+Replication sebaiknya digunakan pada data yang mempunyai proses yang lambat
+
+6. Kapan sebaiknya kita menggunakan sharding?
+Sharding digunakan saat memproses data yang besar dan transaksional
